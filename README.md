@@ -39,6 +39,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 - `content.js`：十个主题、术语、模板与资料来源。
 - `app.js`：导航、概念演示、模板下载与最近阅读位置。
 - `styles.css`：响应式界面。
+- `scripts/build_site.py`：发布时为 CSS、JavaScript 生成带内容指纹的地址，并写入可见版本标识，避免新页面继续使用旧脚本。
 - `diagrams.js`：原理图解、上下文演示、项目/任务关系、流水线阶段及操作示例。
 
 修改后检查：
@@ -47,6 +48,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 node --check content.js
 node --check app.js
 node --check diagrams.js
+python3 scripts/build_site.py
 ```
 
 全部交互均为预设教学模拟，不调用真实模型、邮箱或 ZCode。角色与工作流内容只是说明示例，不安装配置或创建任务。
