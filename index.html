@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f3">
+  <meta name="description" content="从理解大模型到设计自己的工作流。为日常电脑工作设计的 ZCode 中文互动教程，含模拟实验、实战模板和学习进度。">
+  <title>ZCode 学习手册 · 把日常工作交给 AI</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./content.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <aside class="sidebar" id="sidebar" aria-label="课程导航"></aside>
+  <div class="page">
+    <header class="topbar">
+      <button class="mobile-menu icon-button" id="menu" aria-label="打开课程目录" aria-expanded="false" aria-controls="sidebar">☰</button>
+      <div class="breadcrumb">学习手册 <span>/</span> <span id="breadcrumb">课程概览</span></div>
+      <div class="top-actions"><button class="text-button" id="glossary-open">术语小抄 <span>↗</span></button><a href="https://zcode.z.ai/cn/docs/welcome" target="_blank" rel="noopener noreferrer">官方文档 ↗</a></div>
+    </header>
+    <main id="main" tabindex="-1"></main>
+    <footer class="site-footer"><span>ZCode 学习手册 · 独立制作的中文教程，非官方网站</span><a href="#sources">资料来源与版本说明 ↗</a></footer>
+  </div>
+  <dialog id="glossary" aria-labelledby="glossary-title"><div class="dialog-heading"><div><span class="eyebrow">QUICK REFERENCE</span><h2 id="glossary-title">术语小抄</h2></div><button class="icon-button" id="glossary-close" aria-label="关闭术语小抄">×</button></div><label for="term-search" class="sr-only">搜索术语</label><input id="term-search" type="search" placeholder="搜索：上下文、Skill、MCP…"><div id="terms"></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <noscript>请启用 JavaScript，以使用课程导航、模拟实验和练习。</noscript>
+</body>
+</html>
