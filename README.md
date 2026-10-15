@@ -22,7 +22,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 4. 在 **Actions** 中运行 `Publish tutorial to GitHub Pages`，或再次推送到 `main` 触发它。
 5. 成功后，从部署记录或 Pages 设置中取得实际地址，通常为 `https://用户名.github.io/zcode-study/`。
 
-本项目仓库：[mammgerL/zcode-study](https://github.com/mammgerL/zcode-study)。网站地址：[ZCode 学习手册](https://mammgerl.github.io/zcode-study/)。
+本项目仓库：[mammger/zcode-study](https://github.com/mammger/zcode-study)。网站地址：[ZCode 学习手册](https://mammger.github.io/zcode-study/)。
 
 已提供 `.github/workflows/pages.yml`，推送 `main` 分支即可自动发布。它仅发布网页资源与练习包，不发布脚本、说明文档和浏览器检查产物。发布状态可在仓库 Actions 中查看。
 
