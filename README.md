@@ -2,7 +2,9 @@
 
 面向日常电脑工作的中文互动教程。使用原生 HTML / CSS / JavaScript，无构建依赖，适合 GitHub Pages。
 
-课程包含 LLM 与上下文、Agent 循环、工具与权限、Skills、自定义角色、项目、工作流与自动化，以及完整办公练习。九章约 66 分钟，可分次学习。
+内容包含 LLM 与上下文、Agent 的系统提示词和执行循环、工具与权限、Skills、自定义角色、项目、工作流与自动化。八个主题约 61 分钟，按需阅读，无测验、练习或通关要求。
+
+Agent 主题包含聊天与 Agent 对比、运行环境分工图、系统提示词示例、工具调用图、五次模型调用的上下文查看器，以及上下文压缩对比。图中请求与提示词均为原创说明性示例，不是 ZCode 内部实现的还原。
 
 ## 本地查看
 
@@ -24,7 +26,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 本项目仓库：[mammger/zcode-study](https://github.com/mammger/zcode-study)。网站地址：[ZCode 学习手册](https://mammger.github.io/zcode-study/)。
 
-已提供 `.github/workflows/pages.yml`，推送 `main` 分支即可自动发布。它仅发布网页资源与练习包，不发布脚本、说明文档和浏览器检查产物。发布状态可在仓库 Actions 中查看。
+已提供 `.github/workflows/pages.yml`，推送 `main` 分支即可自动发布。它仅发布网页资源，不发布脚本、说明文档和浏览器检查产物。发布状态可在仓库 Actions 中查看。
 
 若希望根地址为 `https://用户名.github.io/`，仓库应命名为 `用户名.github.io`。自定义域名可在 Pages 设置中另外配置。
 
@@ -32,30 +34,29 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 ## 修改内容
 
-- `content.js`：九章课程、问题、术语、模板与资料来源。
-- `app.js`：导航、实验、进度、下载与表单行为。
+- `content.js`：八个主题、术语、模板与资料来源。
+- `app.js`：导航、概念演示、模板下载与最近阅读位置。
 - `styles.css`：响应式界面。
-- `scripts/build_practice.py`：生成虚构资料练习包；修改技能/项目规则后重新运行。
-- `downloads/zcode-office-practice.zip`：可下载练习资料与参考答案。
+- `diagrams.js`：原理图解、上下文演示及静态工作示例。
 
 修改后检查：
 
 ```sh
 node --check content.js
 node --check app.js
-python3 scripts/build_practice.py
+node --check diagrams.js
 ```
 
-全部交互均为预设教学模拟，不调用真实模型、邮箱或 ZCode。角色与定时任务生成器只生成文字，不安装配置或创建任务。
+全部交互均为预设教学模拟，不调用真实模型、邮箱或 ZCode。角色与工作流内容只是说明示例，不安装配置或创建任务。
 
-进度与输入草稿只保存在当前浏览器 localStorage；不跨设备同步，没有本站分析统计。使用本机系统字体，不依赖外部字体服务。无需模型 API 密钥；真实 AI 或邮箱功能需要另行设计后端与授权。
+最近阅读位置只保存在当前浏览器 localStorage；不跨设备同步，没有本站分析统计。使用本机系统字体，不依赖外部字体服务。无需模型 API 密钥；真实 AI 或邮箱功能需要另行设计后端与授权。
 
 ## 内容依据
 
-页面 `#sources` 中有官方原文入口与版本说明。以 `https://zcode.z.ai/cn/docs/` 当前官方文档为产品依据；原理参考 Google 的语言模型课程与 Anthropic 的 Agent 文章。所有会议记录、人名、角色和练习数据为教学设计，教程非 ZCode 官方出品。
+页面 `#sources` 中有官方原文入口与版本说明。以 `https://zcode.z.ai/cn/docs/` 当前官方文档为产品依据；原理参考 Google 的语言模型课程与 Anthropic 的 Agent 文章。所有会议记录、人名、角色和案例数据为原创示例，教程非 ZCode 官方出品。
 
-## 已完成的验证
+## 验证方式
 
-通过 Chrome 实际交互检查：九章渲染与答题通关、全部模拟实验、表单和进度刷新保留、技能和 ZIP 下载、剪贴板复制、术语搜索及 Esc 关闭、键盘跳过导航、390px 手机导航与页面溢出、项目子路径资源加载。JavaScript 语法检查与练习 ZIP 完整性检查通过。
+已在 Chrome 验证八个主题和概览、资料页：1440px、390px、320px 均无横向溢出；Agent 五次调用的历史累积与新增标记、三种上下文状态、键盘切换、手机导航、工具能力切换、术语搜索与阅读位置保存均通过。桌面与手机图解已检查截图。图解按说明性模拟验证，不验证真实模型或工具行为。
 
-GitHub Actions 工作流负责语法检查、练习包生成和 Pages 发布，远程运行结果见仓库 Actions。本地页面通过 HTTP 预览验证；自动化浏览器不支持直接验证 file:// 页面，建议使用上面的本地 HTTP 启动方式。
+GitHub Actions 工作流负责 JavaScript 语法检查与 Pages 发布，远程运行结果见仓库 Actions。本地页面使用 HTTP 预览；建议使用上面的本地启动方式。

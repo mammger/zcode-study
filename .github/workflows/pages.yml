@@ -23,10 +23,10 @@ jobs:
         run: |
           node --check content.js
           node --check app.js
-          python3 scripts/build_practice.py
+          node --check diagrams.js
           mkdir -p _site
-          cp index.html styles.css content.js app.js .nojekyll _site/
-          cp -R assets downloads _site/
+          cp index.html styles.css content.js app.js diagrams.js .nojekyll _site/
+          cp -R assets _site/
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
