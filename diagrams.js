@@ -49,14 +49,7 @@ function explanationDiagram(type) {
  if(type==='role') return lab('一个角色如何改变做事方式','以邮件草稿助手为例，职责、交付和工具范围需要互相配合。', `<div class="prompt-sheet">${[
  ['职责','根据指定来信与已确认事实起草回复。'],['风格','简洁、温和、专业，不擅自作出承诺。'],['交付','主题、正文、待确认事项，附重要事实来源。'],['边界','不补造事实，不发送消息，不覆盖原始材料。'],['工具','读取材料；如需在邮箱保存草稿，再配置相应服务和权限。']
  ].map(([k,v])=>`<div class="prompt-clause"><b>${k}</b><span>${v}</span></div>`).join('')}</div><p class="hint">这是一份角色说明示例，未在 ZCode 中创建角色。文字里的“只读”不能代替真实工具限制。</p>`);
- if(type==='workflow') return lab('一份每周简报，怎样从资料走到交付','工作流把步骤、依赖和异常处理提前说清楚。', `<ol class="workflow-explainer">${[
- ['收集资料','读取本周会议记录、进度和来信。','没有新材料 → 记录“本期无更新”。'],
- ['提取事实','整理进展、待办和风险，附原文位置。','信息缺失 → 标记待确认。'],
- ['核对来源','检查日期、金额和不同材料的冲突。','无法核实 → 保留差异，不自行选择。'],
- ['生成草稿','按日期保存周报与邮件草稿。','写入失败 → 报告实际错误。'],
- ['审核与交付','人确认内容，需要发送时再按授权执行。','防止重复发送，保留执行结果。']
- ].map(([title,body,branch])=>`<li><b>${title}</b><p>${body}</p><small>${branch}</small></li>`).join('')}</ol><div class="diagram-callout"><b>自动化加上触发时间：</b>例如每周五 16:00 启动这条流程。ZCode 本机任务需要电脑唤醒、应用运行；工作流本身不会让电脑关机后继续工作。</div>`);
- return '';
+ return chapterDiagram(type);
 }
 
 const AGENT_HISTORY = [
@@ -111,4 +104,48 @@ function bindAgent() {
   const [title,flow,items,note]=views[n];
   $('#memory-view').innerHTML=`<div class="memory-flow"><b>${title}</b><p>${flow}</p></div><div class="memory-cards">${items.map(t=>`<div>${t}</div>`).join('')}</div><div class="diagram-callout">${note}</div>`;
  });
+}
+
+function guideRoadmap(){
+ return `<section class="guide-roadmap" aria-label="从原理到应用的阅读路线"><div class="section-heading"><div><span class="eyebrow">WHY → HOW → USE</span><h2>每个功能，都从一个问题讲起</h2></div></div><div class="roadmap-grid">${[
+ ['01','理解原理','它为什么会回答？怎样才会办事？',[['model','模型'],['context','上下文'],['agent','Agent']]],
+ ['02','组织日常工作','资料放哪里？怎样少重复交代？',[['tools','工具'],['projects','项目'],['skills','Skill'],['roles','角色']]],
+ ['03','把方法变成流程','步骤怎样衔接？什么时候启动？',[['workflows','流水线'],['automations','自动化'],['applications','完整案例']]]
+ ].map(([num,title,why,links])=>`<div><span class="roadmap-number">${num}</span><h3>${title}</h3><p>${why}</p><div>${links.map(([id,text])=>`<a href="#${id}">${text} →</a>`).join('')}</div></div>`).join('')}</div><p class="roadmap-case">贯穿案例：同一个“秋季活动筹备”项目，从整理一份会议记录，走到持续跟进资料和每周简报。所有案例为说明示例，不设测验或练习。</p></section>`;
+}
+function applicationSection(l){
+ const a=l.application;if(!a)return '';
+ return `<section class="product-use" id="product-use" tabindex="-1" aria-labelledby="product-use-title"><span class="diagram-kicker">从原理到使用 · ZCODE</span><h2 id="product-use-title">${esc(a.title)}</h2><ol class="product-steps">${a.steps.map(([title,body])=>`<li><h3>${esc(title)}</h3><p>${esc(body)}</p></li>`).join('')}</ol><div class="office-example"><span class="diagram-kicker">办公示例 · 按自己的材料调整</span><div class="generated-text">${esc(a.example)}</div></div><div class="expected-result"><b>你应该得到什么</b><p>${esc(a.expected)}</p></div><div class="inline-sources"><span>操作依据</span>${a.sources.map(i=>`<a href="${SOURCES[i][1]}" target="_blank" rel="noopener noreferrer">${esc(SOURCES[i][0])} ↗</a>`).join('')}</div></section>`;
+}
+function chapterDiagram(type){
+ if(type==='project-why')return figure('为什么建项目：把“重新找一遍”变成“从已有资料继续”', `<div class="compare-grid"><div class="compare-column"><span class="diagram-kicker">资料散在聊天与下载目录里</span><h3>每次重新拼背景</h3><ol class="flow-list"><li>找上次的会议记录</li><li>确认哪份报价是新版</li><li>重讲日期、格式和边界</li><li>从长聊天里翻产物</li></ol></div><div class="compare-column accent"><span class="diagram-kicker">围绕一个活动建立工作区</span><h3>每次定位所需材料</h3><ol class="flow-list"><li>原始材料放 inbox/</li><li>最新决定写入事实文件</li><li>协作规则放 AGENTS.md</li><li>新产物保存到 output/</li></ol></div></div>`, '项目提供稳定位置；模型仍要通过引用和读取取得内容。目录名称只是本教程的组织建议。');
+ if(type==='project-layers')return figure('一份项目，多条任务；每次模型调用只拿需要的资料', `<div class="project-scope"><span class="diagram-kicker">工作区 / 秋季活动筹备</span><div class="project-resources"><span>▤ 会议与来信</span><span>▤ 最新报价</span><span>▤ AGENTS.md</span><span>▤ 已确认决定</span></div><div class="diagram-down" aria-hidden="true">↓ 按任务引用或读取 ↓</div><div class="project-tasks"><div><b>任务 A · 整理会议</b><p>会议记录 → 待办表</p></div><div><b>任务 B · 核对报价</b><p>报价 + 约定 → 差异清单</p></div><div><b>任务 C · 回复客户</b><p>来信 + 最新事实 → 草稿</p></div></div><div class="loop-return">产物与已确认事实写回项目 → 下次任务再引用</div></div>`, '项目 ≠ 一条长对话 ≠ 一次模型的上下文。项目内不同任务可复用文件，但不会自动共享全部对话细节。');
+ if(type==='pipeline')return lab('一条办公流水线，信息怎样往下走？','点击阶段，直接看它的输入、输出和继续条件；不需要排序或作答。', `<div class="pipeline-graph" aria-label="提取材料、汇总核对、生成草稿、人工确认"><div class="pipeline-inputs"><span>会议记录</span><span>客户来信</span><span>场地报价</span></div><div class="diagram-down" aria-hidden="true">↓ 分别读取与提取，可按需要并行 ↓</div><div class="pipeline-stages">${['提取事实','汇总核对','生成草稿','确认交付'].map((t,i)=>`<button data-pipeline="${i}" aria-pressed="${i===0}"><small>0${i+1}</small><b>${t}</b></button>`).join('')}</div><div class="pipeline-branch">发现冲突 → 待确认清单；缺少资料 → 报告缺项；不把失败当成功传下去</div></div><div id="pipeline-detail" class="pipeline-detail" aria-live="polite"></div>`);
+ if(type==='workflow-choices')return figure('四个不同的问题，四种不同的能力', `<div class="concept-comparison">${[
+ ['Skill','每次按什么标准做？','会议摘要总要区分决定、意向和待确认。'],
+ ['动态工作流','步骤与结果如何衔接？','分别提取材料 → 汇总冲突 → 生成草稿。'],
+ ['目标模式 /goal','这一次怎样持续做到目标达成？','继续整理，直到指定材料都有清单与出处。'],
+ ['定时任务','什么时候再次开始？','每周五 16:00 整理本周更新。']
+ ].map(([name,q,example])=>`<div><b>${name}</b><span>${q}</span><p>${example}</p></div>`).join('')}</div>`, '保存方法、组织执行、持续推进和定时触发是不同层次；可以按实际需要组合。');
+ if(type==='automation-boundary')return figure('流程与时钟，各解决一件事', `<div class="instruction-grid"><div><b>工作流 · 怎么做</b><p>读取 → 提取 → 核对 → 产物</p><small>可手动发起，不要求设定时间。</small></div><div><b>定时任务 · 何时做</b><p>项目 + 时间 + 本次指令</p><small>可执行普通任务指令，不要求预先建工作流。</small></div></div><div class="loop-return">实际执行 → 留下产物与历史 → 检查本次是否成功</div>`, '把一套方法写进定时任务的指令，与调用已保存动态工作流是不同做法。不能仅凭出现一个时间就判断两者已经连接。');
+ if(type==='application-map')return figure('按遇到的问题，增加需要的功能', `<div class="application-ladder">${[
+ ['给了要求，还是答非所问','补上下文','引用材料，给目标与判断标准','context'],
+ ['它会说，但还不能操作','接工具','确认文件、邮箱或浏览器能力','tools'],
+ ['明天又要重找资料','建项目','围绕活动保存原文、规则与产物','projects'],
+ ['每次重复纠正同一方法','存 Skill','复用提取规则和交付格式','skills'],
+ ['同一任务需要不同职责','定义角色','核查和起草各有清楚交接','roles'],
+ ['步骤变多、批量结果要汇合','组织工作流','明确依赖、分支与输出','workflows'],
+ ['每周都要记得亲自启动','设自动化','安排时间并查看运行记录','automations']
+ ].map(([problem,choice,body,id])=>`<a href="#${id}"><span>${problem}</span><b>${choice} →</b><small>${body}</small></a>`).join('')}</div>`, '从当前工作遇到的困难出发，不需要为了用功能而把简单任务复杂化。');
+ return '';
+}
+function bindChapterDiagrams(){
+ if(!$('#pipeline-detail'))return;
+ const stages=[
+ ['原始材料','分别读会议、来信和报价，提取事实并注明位置。','每份材料的事实清单','读不到的材料明确列出，不能用猜测填补。'],
+ ['各份事实清单','对齐负责人、日期和费用，保留不一致说法。','日期与费用差异表','例如 10 月 22 日与 23 日冲突，要进入待确认项。'],
+ ['经过核对的事实与差异','根据可靠事实起草待办与回复，并保存产物。','待办表.md + 回复草稿.md','草稿可表达“正在确认”，不能擅自承诺具体日期。'],
+ ['产物与待确认清单','人确认业务事实；需要发送时按明确授权执行。','确认后的文件或真实发送结果','在本教程案例中只生成本地草稿，不执行发送。']
+ ];
+ segments('pipeline',n=>{const [input,action,output,gate]=stages[n];$('#pipeline-detail').innerHTML=`<div><span>输入</span><p>${input}</p></div><div><span>这一步做什么</span><p>${action}</p></div><div><span>交给下一步</span><p>${output}</p></div><div class="pipeline-gate"><span>继续条件 / 异常出口</span><p>${gate}</p></div>`;});
 }
