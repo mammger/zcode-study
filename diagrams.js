@@ -122,7 +122,7 @@ function bindAgent() {
 function guideRoadmap(){
  return `<section class="guide-roadmap" aria-label="从原理到应用的阅读路线"><div class="section-heading"><div><span class="eyebrow">WHY → HOW → USE</span><h2>每个功能，都从一个问题讲起</h2></div></div><div class="roadmap-grid">${[
  ['01','理解原理','它为什么会回答？怎样才会办事？',[['model','模型'],['context','上下文'],['agent','Agent']]],
- ['02','组织日常工作','它在哪里运行？资料放哪里？怎样少重复交代？',[['tools','工具'],['runtime','执行环境'],['projects','项目'],['skills','Skill'],['roles','角色'],['plugins','插件']]],
+ ['02','组织日常工作','它在哪里运行？资料放哪里？怎样把想法做成工具？',[['tools','工具'],['runtime','执行环境'],['projects','项目'],['local-system','本地系统'],['skills','Skill'],['roles','角色'],['plugins','插件']]],
  ['03','把方法变成流程','步骤怎样衔接？什么时候启动？',[['workflows','流水线'],['automations','自动化'],['applications','完整案例']]]
  ].map(([num,title,why,links])=>`<div><span class="roadmap-number">${num}</span><h3>${title}</h3><p>${why}</p><div>${links.map(([id,text])=>`<a href="#${id}">${text} →</a>`).join('')}</div></div>`).join('')}</div><p class="roadmap-case">贯穿案例：同一个“秋季活动筹备”项目，从整理一份会议记录，走到持续跟进资料和每周简报。</p>${zcodeFeatureMap()}</section>`;
 }
@@ -157,12 +157,18 @@ function chapterDiagram(type){
  ['运行主机','提供持续环境','电脑或服务器保持开机、联网，并提供文件、工具和权限。']
  ]), '模型在云端，不表示任务会自动在云端持续执行。谁运行 Agent，谁就需要在任务发生时保持可用。');
  if(type==='remote-control')return figure('远程控制改变“你从哪里操作”，不改变“任务在哪里执行”', `<div class="remote-control-map"><div class="remote-device"><span>手机</span><b>远程控制页面</b><small>看任务、追加指令、查看进度</small></div><span class="journey-arrow" aria-hidden="true">→</span><div class="remote-device primary"><span>ZCode 桌面端</span><b>已有窗口与会话</b><small>接收手机发来的指令</small></div><span class="journey-arrow" aria-hidden="true">→</span><div class="remote-device"><span>执行环境</span><b>电脑或远端主机</b><small>读取文件、运行工具、完成任务</small></div></div><div class="concept-comparison"><div><b>本地工作区</b><span>命令与文件操作在桌面电脑执行。</span></div><div><b>SSH 工作区</b><span>命令与文件操作在远端服务器执行。</span></div></div>`, '手机只是一层控制界面。桌面端和它原先连接的执行环境仍需保持在线。');
+ if(type==='local-system-flow')return figure('本地系统的开发闭环：文件在电脑上，结果先在电脑上验证', journey([
+ ['① 需求 + 工作区','说明要解决什么','你写需求.md；在 ZCode 打开一个本地文件夹。'],
+ ['② Agent 实现 + 启动','把文件变成程序','Agent 创建文件，按需要运行本机命令启动服务。'],
+ ['③ localhost 预览 + 反馈','实际操作再修正','浏览器打开本机地址；把观察到的问题交回 Agent。']
+ ]), '预览发现问题 → Agent 修改 → 重新查看，形成小循环。服务、浏览器和数据都在这台电脑上时，外部通常无法直接访问。');
  if(type==='plugin-bundle')return figure('插件把一套能力装进同一个包', `<div class="plugin-bundle"><div class="plugin-core"><span>插件</span><b>合同资料包</b><small>由可信来源提供</small></div><div class="plugin-parts"><div><b>Skill</b><span>按合同模板整理</span></div><div><b>命令</b><span>手动启动固定步骤</span></div><div><b>子智能体</b><span>专门核查条款</span></div><div><b>MCP</b><span>连接文件或服务</span></div><div><b>Hook</b><span>在指定事件运行</span></div></div></div><div class="diagram-callout">每一项都是可选的。安装前在插件详情里查看实际组件与来源；插件提供能力，不替你决定要处理哪些资料。</div>`, '插件适合复用一整套工作方式；只有一项需求时，直接用 Skill 或 MCP 往往更清楚。');
  if(type==='application-map')return figure('按遇到的问题，增加需要的功能', `<div class="application-ladder">${[
  ['给了要求，还是答非所问','补上下文','引用材料，给目标与判断标准','context'],
  ['它会说，但还不能操作','接工具','确认文件、邮箱或浏览器能力','tools'],
  ['要在夜间或离开电脑后继续工作','准备执行环境','确认常开主机、触发方式与运行记录','runtime'],
  ['明天又要重找资料','建项目','围绕活动保存原文、规则与产物','projects'],
+ ['想把一个工作做成电脑上的工具','开发本地系统','从需求到 localhost 预览，实际操作后迭代','local-system'],
  ['每次重复纠正同一方法','存 Skill','复用提取规则和交付格式','skills'],
  ['同一任务需要不同职责','定义角色','核查和起草各有清楚交接','roles'],
  ['一套方法、工具和角色要一起复用','装插件','安装前看组件、来源与权限','plugins'],
