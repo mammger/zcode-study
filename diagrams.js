@@ -122,7 +122,7 @@ function bindAgent() {
 function guideRoadmap(){
  return `<section class="guide-roadmap" aria-label="从原理到应用的阅读路线"><div class="section-heading"><div><span class="eyebrow">WHY → HOW → USE</span><h2>每个功能，都从一个问题讲起</h2></div></div><div class="roadmap-grid">${[
  ['01','理解原理','它为什么会回答？怎样才会办事？',[['model','模型'],['context','上下文'],['agent','Agent']]],
- ['02','组织日常工作','资料放哪里？怎样少重复交代？',[['tools','工具'],['projects','项目'],['skills','Skill'],['roles','角色']]],
+ ['02','组织日常工作','它在哪里运行？资料放哪里？怎样少重复交代？',[['tools','工具'],['runtime','执行环境'],['projects','项目'],['skills','Skill'],['roles','角色']]],
  ['03','把方法变成流程','步骤怎样衔接？什么时候启动？',[['workflows','流水线'],['automations','自动化'],['applications','完整案例']]]
  ].map(([num,title,why,links])=>`<div><span class="roadmap-number">${num}</span><h3>${title}</h3><p>${why}</p><div>${links.map(([id,text])=>`<a href="#${id}">${text} →</a>`).join('')}</div></div>`).join('')}</div><p class="roadmap-case">贯穿案例：同一个“秋季活动筹备”项目，从整理一份会议记录，走到持续跟进资料和每周简报。</p></section>`;
 }
@@ -141,9 +141,16 @@ function chapterDiagram(type){
  ['定时任务','什么时候再次开始？','每周五 16:00 整理本周更新。']
  ].map(([name,q,example])=>`<div><b>${name}</b><span>${q}</span><p>${example}</p></div>`).join('')}</div>`, '保存方法、组织执行、持续推进和定时触发是不同层次；可以按实际需要组合。');
  if(type==='automation-boundary')return figure('流程与时钟，各解决一件事', `<div class="instruction-grid"><div><b>工作流 · 怎么做</b><p>读取 → 提取 → 核对 → 产物</p><small>可手动发起，不要求设定时间。</small></div><div><b>定时任务 · 何时做</b><p>项目 + 时间 + 本次指令</p><small>可执行普通任务指令，不要求预先建工作流。</small></div></div><div class="loop-return">实际执行 → 留下产物与历史 → 检查本次是否成功</div>`, '把一套方法写进定时任务的指令，与调用已保存动态工作流是不同做法。不能仅凭出现一个时间就判断两者已经连接。');
+ if(type==='execution-host')return figure('模型、运行程序、主机：三层一起，Agent 才能办事', journey([
+ ['模型服务','生成下一步判断','云端模型根据任务与上下文提出回答或工具请求。'],
+ ['Agent 运行程序','组织并执行循环','带入历史、调用工具、记录结果、决定是否继续。'],
+ ['运行主机','提供持续环境','电脑或服务器保持开机、联网，并提供文件、工具和权限。']
+ ]), '模型在云端，不表示任务会自动在云端持续执行。谁运行 Agent，谁就需要在任务发生时保持可用。');
+ if(type==='remote-control')return figure('远程控制改变“你从哪里操作”，不改变“任务在哪里执行”', `<div class="remote-control-map"><div class="remote-device"><span>手机</span><b>远程控制页面</b><small>看任务、追加指令、查看进度</small></div><span class="journey-arrow" aria-hidden="true">→</span><div class="remote-device primary"><span>ZCode 桌面端</span><b>已有窗口与会话</b><small>接收手机发来的指令</small></div><span class="journey-arrow" aria-hidden="true">→</span><div class="remote-device"><span>执行环境</span><b>电脑或远端主机</b><small>读取文件、运行工具、完成任务</small></div></div><div class="concept-comparison"><div><b>本地工作区</b><span>命令与文件操作在桌面电脑执行。</span></div><div><b>SSH 工作区</b><span>命令与文件操作在远端服务器执行。</span></div></div>`, '手机只是一层控制界面。桌面端和它原先连接的执行环境仍需保持在线。');
  if(type==='application-map')return figure('按遇到的问题，增加需要的功能', `<div class="application-ladder">${[
  ['给了要求，还是答非所问','补上下文','引用材料，给目标与判断标准','context'],
  ['它会说，但还不能操作','接工具','确认文件、邮箱或浏览器能力','tools'],
+ ['要在夜间或离开电脑后继续工作','准备执行环境','确认常开主机、触发方式与运行记录','runtime'],
  ['明天又要重找资料','建项目','围绕活动保存原文、规则与产物','projects'],
  ['每次重复纠正同一方法','存 Skill','复用提取规则和交付格式','skills'],
  ['同一任务需要不同职责','定义角色','核查和起草各有清楚交接','roles'],
