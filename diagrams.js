@@ -122,9 +122,19 @@ function bindAgent() {
 function guideRoadmap(){
  return `<section class="guide-roadmap" aria-label="从原理到应用的阅读路线"><div class="section-heading"><div><span class="eyebrow">WHY → HOW → USE</span><h2>每个功能，都从一个问题讲起</h2></div></div><div class="roadmap-grid">${[
  ['01','理解原理','它为什么会回答？怎样才会办事？',[['model','模型'],['context','上下文'],['agent','Agent']]],
- ['02','组织日常工作','它在哪里运行？资料放哪里？怎样少重复交代？',[['tools','工具'],['runtime','执行环境'],['projects','项目'],['skills','Skill'],['roles','角色']]],
+ ['02','组织日常工作','它在哪里运行？资料放哪里？怎样少重复交代？',[['tools','工具'],['runtime','执行环境'],['projects','项目'],['skills','Skill'],['roles','角色'],['plugins','插件']]],
  ['03','把方法变成流程','步骤怎样衔接？什么时候启动？',[['workflows','流水线'],['automations','自动化'],['applications','完整案例']]]
- ].map(([num,title,why,links])=>`<div><span class="roadmap-number">${num}</span><h3>${title}</h3><p>${why}</p><div>${links.map(([id,text])=>`<a href="#${id}">${text} →</a>`).join('')}</div></div>`).join('')}</div><p class="roadmap-case">贯穿案例：同一个“秋季活动筹备”项目，从整理一份会议记录，走到持续跟进资料和每周简报。</p></section>`;
+ ].map(([num,title,why,links])=>`<div><span class="roadmap-number">${num}</span><h3>${title}</h3><p>${why}</p><div>${links.map(([id,text])=>`<a href="#${id}">${text} →</a>`).join('')}</div></div>`).join('')}</div><p class="roadmap-case">贯穿案例：同一个“秋季活动筹备”项目，从整理一份会议记录，走到持续跟进资料和每周简报。</p>${zcodeFeatureMap()}</section>`;
+}
+function zcodeFeatureMap(){
+ return `<section class="feature-map" aria-labelledby="feature-map-title"><div><span class="eyebrow">ZCODE FEATURE MAP</span><h2 id="feature-map-title">ZCode 的其他功能，放在什么位置？</h2><p>不需要把所有功能一次学完。遇到问题时，从下面找到对应的一层即可。</p></div><div class="feature-map-grid">${[
+ ['处理当前任务','Agent、工具、内置浏览器、执行模式','读资料、生成草稿、执行并查看实际结果。'],
+ ['保存工作线索','项目、任务与文件管理、Memory、编辑历史','保存资料与决定；指令写错时编辑上一条消息继续。'],
+ ['复用方法与能力','Command、Skill、角色、MCP、插件、Hook','从一句快捷要求，到一整套可安装的工作包。'],
+ ['让任务持续推进','/goal、动态工作流、定时任务、闲时任务','分别解决长期目标、步骤编排、按时启动和不着急的排队工作。'],
+ ['换地方继续操作','远程开发、手机 Remote、Bot Channel','决定在哪台机器执行；或从手机、微信、飞书继续已有会话。'],
+ ['回看与管理','运行历史、Review、使用统计','核对任务是否完成、为什么失败、使用量如何变化。']
+ ].map(([title,items,body])=>`<div><h3>${title}</h3><b>${items}</b><p>${body}</p></div>`).join('')}</div><p class="feature-map-note">教程为日常资料、邮件和流程工作优先展开了工具、执行环境、项目、Skill、角色、插件、工作流和自动化；编程专用的 Git、终端与模拟器能力可按需要再查官方文档。</p></section>`;
 }
 function applicationSection(l){
  const a=l.application;if(!a)return '';
@@ -147,6 +157,7 @@ function chapterDiagram(type){
  ['运行主机','提供持续环境','电脑或服务器保持开机、联网，并提供文件、工具和权限。']
  ]), '模型在云端，不表示任务会自动在云端持续执行。谁运行 Agent，谁就需要在任务发生时保持可用。');
  if(type==='remote-control')return figure('远程控制改变“你从哪里操作”，不改变“任务在哪里执行”', `<div class="remote-control-map"><div class="remote-device"><span>手机</span><b>远程控制页面</b><small>看任务、追加指令、查看进度</small></div><span class="journey-arrow" aria-hidden="true">→</span><div class="remote-device primary"><span>ZCode 桌面端</span><b>已有窗口与会话</b><small>接收手机发来的指令</small></div><span class="journey-arrow" aria-hidden="true">→</span><div class="remote-device"><span>执行环境</span><b>电脑或远端主机</b><small>读取文件、运行工具、完成任务</small></div></div><div class="concept-comparison"><div><b>本地工作区</b><span>命令与文件操作在桌面电脑执行。</span></div><div><b>SSH 工作区</b><span>命令与文件操作在远端服务器执行。</span></div></div>`, '手机只是一层控制界面。桌面端和它原先连接的执行环境仍需保持在线。');
+ if(type==='plugin-bundle')return figure('插件把一套能力装进同一个包', `<div class="plugin-bundle"><div class="plugin-core"><span>插件</span><b>合同资料包</b><small>由可信来源提供</small></div><div class="plugin-parts"><div><b>Skill</b><span>按合同模板整理</span></div><div><b>命令</b><span>手动启动固定步骤</span></div><div><b>子智能体</b><span>专门核查条款</span></div><div><b>MCP</b><span>连接文件或服务</span></div><div><b>Hook</b><span>在指定事件运行</span></div></div></div><div class="diagram-callout">每一项都是可选的。安装前在插件详情里查看实际组件与来源；插件提供能力，不替你决定要处理哪些资料。</div>`, '插件适合复用一整套工作方式；只有一项需求时，直接用 Skill 或 MCP 往往更清楚。');
  if(type==='application-map')return figure('按遇到的问题，增加需要的功能', `<div class="application-ladder">${[
  ['给了要求，还是答非所问','补上下文','引用材料，给目标与判断标准','context'],
  ['它会说，但还不能操作','接工具','确认文件、邮箱或浏览器能力','tools'],
@@ -154,6 +165,7 @@ function chapterDiagram(type){
  ['明天又要重找资料','建项目','围绕活动保存原文、规则与产物','projects'],
  ['每次重复纠正同一方法','存 Skill','复用提取规则和交付格式','skills'],
  ['同一任务需要不同职责','定义角色','核查和起草各有清楚交接','roles'],
+ ['一套方法、工具和角色要一起复用','装插件','安装前看组件、来源与权限','plugins'],
  ['步骤变多、批量结果要汇合','组织工作流','明确依赖、分支与输出','workflows'],
  ['每周都要记得亲自启动','设自动化','安排时间并查看运行记录','automations']
  ].map(([problem,choice,body,id])=>`<a href="#${id}"><span>${problem}</span><b>${choice} →</b><small>${body}</small></a>`).join('')}</div>`, '从当前工作遇到的困难出发，不需要为了用功能而把简单任务复杂化。');
